@@ -1,0 +1,39 @@
+pipeline {
+    agent any
+
+    environment {
+        // Définir les variables pour Docker Hub
+        DOCKERHUB_CREDENTIALS = credentials('DockerHubID')
+        IMAGE_NAME = 'mickael26t/monsitehtml'
+    }
+
+    stages {
+        stage('Cloning Git') {
+            steps {
+                // Cloner le dépôt Git
+                git url: 'https://github.com/mickaelatlabo/DevOps.git', branch: 'master'
+            }
+        }
+        
+        stage('Build Docker Image') {
+            steps {
+                // Construire l'image Docker
+                script {
+                    docker.build("${IMAGE_NAME}")
+                }
+            }
+        }
+        
+        stage('Push Image to Docker Hub') {
+            steps {
+                // Se connecter à Docker Hub
+                script {
+                    docker.withRegistry('', "${DOCKERHUB_CREDENTIALS}") {
+                        // Pousser l'image sur Docker Hub
+                        docker.image("${IMAGE_NAME}").push()
+                    }
+                }
+            }
+        }
+    }
+}
