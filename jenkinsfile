@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         // Définir les variables pour Docker Hub
-        DOCKERHUB_CREDENTIALS = credentials('DockerHubID')
+        DOCKERHUB_CREDENTIALS ='DockerHubID'
         IMAGE_NAME = 'mickael26t/monsitehtml'
     }
 
