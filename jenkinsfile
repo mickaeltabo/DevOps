@@ -28,7 +28,7 @@ pipeline {
             steps {
                 // Se connecter à Docker Hub
                 script {
-                    docker.withRegistry('https://index.docker.io/v1/', "${DockerHubID}") {
+                    docker.withRegistry('https://index.docker.io/v1/', "${DOCKERHUB_CREDENTIALS}") {
                         // Pousser l'image sur Docker Hub
                         docker.image("${IMAGE_NAME}").push()
                     }
