@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         // Définir les variables pour Docker Hub
-        DOCKERHUB_CREDENTIALS ='DockerHubID'
+        DOCKERHUB_CREDENTIALS = 'DockerHubID'
         IMAGE_NAME = 'mickael26t/monsitehtml'
     }
 
@@ -40,19 +40,21 @@ pipeline {
                 }
             }
         }
+        
         stage('SonarQube Analysis') {
-                    steps {
-                        withSonarQubeEnv('Sonar-Server') {
-                            script {
-                                def scannerHome = tool 'SonarScanner';
-                                sh "${scannerHome}/bin/sonar-scanner \
-                                    -Dsonar.projectKey=crypto \
-                                    -Dsonar.sources=."
-                            }
-                        }
+            steps {
+                withSonarQubeEnv('Sonar-Server') {
+                    script {
+                        def scannerHome = tool 'SonarScanner';
+                        sh "${scannerHome}/bin/sonar-scanner \
+                            -Dsonar.projectKey=crypto \
+                            -Dsonar.sources=."
                     }
                 }
-            stage('Deploy to EC2') {
+            }
+        }
+        
+        stage('Deploy to EC2') {
             steps {
                 script {
                     def ec2Instance = [
@@ -65,20 +67,20 @@ pipeline {
                     // Execute commands on the EC2 instance
                     sshagent(credentials: ['SSH-KEY']) {
                         sh '''
-                            ssh -o StrictHostKeyChecking=no ubuntu@13.37.220.156 'sudo docker run mickael26t/monsitehtml:latest -d'
+                            ssh -o StrictHostKeyChecking=no ubuntu@13.37.220.156 'sudo docker run mickael26t/monsitehtml:latest'
                         '''
                     }
                 }
             }
-            }
-        post {
+        }
+    }
+
+    post {
         success {
             echo 'Pipeline completed successfully!'
         }
         failure {
             echo 'Pipeline failed!'
         }
-    }
-
     }
 }
