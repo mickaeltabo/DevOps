@@ -40,6 +40,17 @@ pipeline {
                 }
             }
         }
+        stage('Security Scan with Trivy') {
+            steps {
+                script {
+                    // build the latest Docker image
+                    sh "docker build -t mickael26t/monsitehtml:latest ."
+
+                    // Run Trivy to scan the Docker image for vulnerabilities
+                    sh "trivy image mickael26t/monsitehtml:latest"
+                }
+            }
+        }
         
         stage('SonarQube Analysis') {
             steps {
