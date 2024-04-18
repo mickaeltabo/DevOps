@@ -35,5 +35,18 @@ pipeline {
                 }
             }
         }
+        stage('SonarQube Analysis') {
+                    steps {
+                        withSonarQubeEnv('Sonar-Server') {
+                            script {
+                                def scannerHome = tool 'SonarScanner';
+                                sh "${scannerHome}/bin/sonar-scanner \
+                                    -Dsonar.projectKey=crypto \
+                                    -Dsonar.sources=."
+                            }
+                        }
+                    }
+                }
+
     }
 }
