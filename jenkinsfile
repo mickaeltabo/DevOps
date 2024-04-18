@@ -8,6 +8,11 @@ pipeline {
     }
 
     stages {
+        stage('Clean Workspace') {
+            steps {
+                cleanWs()
+            }
+        }
         stage('Cloning Git') {
             steps {
                 // Cloner le dépôt Git
