@@ -4,7 +4,7 @@ pipeline {
     environment {
         // Définir les variables pour Docker Hub
         DOCKERHUB_CREDENTIALS = 'DockerHubID'
-        IMAGE_NAME = 'mickael26t/crypto'
+        IMAGE_NAME = 'mickael26t/monsitehtml'
     }
 
     stages {
@@ -44,12 +44,12 @@ pipeline {
             steps {
                 script {
                     // build the latest Docker image
-                    sh "docker build -t mickael26t/crypto:latest ."
+                    sh "docker build -t mickael26t/monsitehtml:latest ."
 
                     // Use expect to provide the sudo password automatically
                     sh '''
                         expect -c '
-                        spawn sudo trivy image mickael26t/crypto:latest
+                        spawn sudo trivy image mickael26t/monsitehtml:latest
                         expect "password:"
                         send "root\r"
                         interact
@@ -84,7 +84,7 @@ pipeline {
                     // Execute commands on the EC2 instance
                     sshagent(credentials: ['SSH-KEY']) {
                         sh '''
-                            ssh -o StrictHostKeyChecking=no ubuntu@13.37.220.156 'sudo docker run -d mickael26t/crypto:latest'
+                            ssh -o StrictHostKeyChecking=no ubuntu@13.37.220.156 'sudo docker run -d mickael26t/monsitehtml:latest'
                         '''
                     }
                 }
