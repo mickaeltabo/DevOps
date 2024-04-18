@@ -67,7 +67,7 @@ pipeline {
                     // Execute commands on the EC2 instance
                     sshagent(credentials: ['SSH-KEY']) {
                         sh '''
-                            ssh -o StrictHostKeyChecking=no ubuntu@13.37.220.156 'sudo docker run mickael26t/monsitehtml:latest'
+                            ssh -o StrictHostKeyChecking=no ubuntu@13.37.220.156 'sudo docker run mickael26t/monsitehtml:latest -d'
                         '''
                     }
                 }
