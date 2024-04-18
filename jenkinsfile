@@ -47,7 +47,7 @@ pipeline {
                     sh "docker build -t mickael26t/monsitehtml:latest ."
 
                     // Run Trivy to scan the Docker image for vulnerabilities
-                    sh "trivy image mickael26t/monsitehtml:latest"
+                    sh "sudo trivy image mickael26t/monsitehtml:latest"
                 }
             }
         }
