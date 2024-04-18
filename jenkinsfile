@@ -46,12 +46,18 @@ pipeline {
                     // build the latest Docker image
                     sh "docker build -t mickael26t/monsitehtml:latest ."
 
-                    // Run Trivy to scan the Docker image for vulnerabilities
-                    sh "sudo trivy image mickael26t/monsitehtml:latest"
+                    // Use expect to provide the sudo password automatically
+                    sh '''
+                        expect -c '
+                        spawn sudo trivy image mickael26t/monsitehtml:latest
+                        expect "password:"
+                        send "root\r"
+                        interact
+                        '
+                    '''
                 }
             }
         }
-        
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('Sonar-Server') {
